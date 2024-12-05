@@ -7,6 +7,9 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+// Promisify readline question
+const question = (query) => new Promise((resolve) => rl.question(query, resolve));
+
 async function setup() {
     try {
         console.log('\n=== WeatherStack API Setup ===\n');
@@ -14,18 +17,14 @@ async function setup() {
         console.log('You can get your API key from: https://weatherstack.com/\n');
 
         // Prompt for API key
-        const apiKey = await new Promise((resolve) => {
-            rl.question('Please enter your WeatherStack API key: ', (answer) => {
-                resolve(answer.trim());
-            });
-        });
+        const apiKey = await question('Please enter your WeatherStack API key: ');
 
-        if (!apiKey) {
+        if (!apiKey.trim()) {
             throw new Error('API key is required');
         }
 
         // Define the environment variable
-        const envVariable = `WEATHERSTACK_API_KEY=${apiKey}`;
+        const envVariable = `WEATHERSTACK_API_KEY=${apiKey.trim()}`;
 
         // Get the path to the root .env file
         const envPath = path.join(process.cwd(), '.env');
@@ -62,6 +61,7 @@ async function setup() {
         process.exit(1);
     } finally {
         rl.close();
+        process.exit(0);
     }
 }
 
