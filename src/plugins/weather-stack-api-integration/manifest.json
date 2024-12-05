@@ -1,0 +1,7 @@
+{
+    "name": "weather-stack-api-integration",
+    "version": "1.0.0",
+    "description": "Weather Stack API Integration",
+    "type": "integration",
+    "dependencies": ["axios", "dotenv"]
+}
